@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>关于 - SYSTEM-HTY</title>
+    <meta name="description" content="了解SYSTEM-HTY的背景、技能和项目经历">
+    <meta name="keywords" content="SYSTEM-HTY, Python开发者, 编程, 个人简介">
+    <meta name="author" content="SYSTEM-HTY">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 浏览器图标 (Favicon) -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --dark-color: #2c3e50;
+            --light-color: #f8f9fa;
+            --text-color: #333;
+            --text-light: #7f8c8d;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            --transition: all 0.3s ease;
+            --nav-bg: rgba(52, 152, 219, 0.8);
+            --border-color: #ddd;
+        }
+
+        [data-theme="dark"] {
+            --text-color: #f0f0f0;
+            --text-light: #aaa;
+            --light-color: #1a1a2a;
+            --card-bg: #1e1e1e;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            --primary-color: #64b5f6;
+            --secondary-color: #81c784;
+            --accent-color: #ff8a65;
+            --dark-color: #f5f5f5;
+            --nav-bg: rgba(30, 30, 30, 0.95);
+            --border-color: #444;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Microsoft YaHei', sans-serif;
+            color: var(--text-color);
+            scroll-behavior: smooth;
+            transition: var(--transition);
+            background-color: var(--light-color);
+        }
+        
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--light-color);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.5s ease;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--card-bg);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* 背景图样式 */
+        #bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            z-index: -1;
+            opacity: 0.9;
+        }
+        
+        /* 顶部控制区域（搜索和主题切换） */
+        .top-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* 搜索框样式 */
+        .search-container {
+            position: relative;
+        }
+        
+        .search-box {
+            padding: 8px 15px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 200px;
+            transition: var(--transition);
+            color: var(--text-color);
+        }
+        
+        .search-box:focus {
+            width: 250px;
+            outline: none;
+            box-shadow: 0 0 8px var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        /* 主题切换按钮 */
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-color);
+            white-space: nowrap;
+        }
+        
+        .theme-toggle:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* 右上角导航栏 */
+        .top-nav {
+            position: absolute;
+            top: 20px;
+            right: 320px;
+            z-index: 20;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-link {
+            padding: 8px 15px;
+            background-color: var(--nav-bg);
+            color: white !important;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: bold;
+            border: 1px solid var(--border-color);
+        }
+        
+        .nav-link:hover {
+            background-color: var(--primary-color);
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 右上角图片样式 */
+        .corner-image {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            box-shadow: var(--shadow);
+            z-index: 10;
+            border: none;
+            transition: transform 0.3s;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
+        
+        .corner-image:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 时间显示样式 */
+        .time-display {
+            text-align: center;
+            margin: 15px 0 25px;
+            font-size: 1.2em;
+            color: var(--dark-color);
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            background-color: var(--card-bg);
+            padding: 8px 15px;
+            border-radius: 6px;
+            display: inline-block;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .time-display:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* 内容容器样式 */
+        .container {
+            background: var(--card-bg);
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+            color: var(--text-color);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+        
+        .container:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 文字样式 */
+        h1, h2, h3 {
+            color: var(--dark-color);
+            margin-top: 0;
+            transition: color 0.3s;
+        }
+        
+        h1 {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            text-align: center;
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+        
+        h1:hover::after {
+            width: 100%;
+        }
+        
+        p, li {
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+        
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            text-decoration: underline;
+            color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+        
+        /* B站图标样式 */
+        .bilibili-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #fb7299;
+            color: white !important;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        
+        .bilibili-link:hover {
+            background-color: #ff9db5;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 内容区块样式 */
+        section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        section:hover {
+            border-color: var(--primary-color);
+        }
+        
+        section:last-child {
+            border-bottom: none;
+        }
+        
+        ul {
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+            color: var(--text-color);
+        }
+        
+        li::before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            transition: var(--transition);
+        }
+        
+        li:hover::before {
+            color: var(--secondary-color);
+            transform: scale(1.5);
+        }
+        
+        /* 技能进度条 */
+        .skill-bar {
+            margin: 15px 0;
+        }
+        
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .skill-progress {
+            height: 10px;
+            background-color: var(--border-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .skill-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 5px;
+            transition: width 1s ease-in-out;
+        }
+        
+        /* 时间线样式 */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            border: 2px solid var(--card-bg);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+        
+        footer:hover {
+            border-color: var(--primary-color);
+        }
+        
+        /* 面包屑导航 */
+        .breadcrumb {
+            padding: 10px 0;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .breadcrumb span {
+            color: var(--dark-color);
+            font-weight: bold;
+        }
+        
+        /* 回到顶部按钮 */
+        #backToTop {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            padding: 12px 16px;
+            border-radius: 50%;
+            font-size: 18px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        #backToTop:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .container {
+                max-width: 95%;
+                margin: 50px auto;
+            }
+            
+            .top-nav {
+                right: 280px;
+            }
+            
+            .corner-image {
+                width: 120px;
+                height: 120px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-controls {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 10px 0;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .top-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                top: auto;
+                background: var(--card-bg);
+                padding: 10px;
+                justify-content: space-around;
+                flex-direction: row;
+                gap: 5px;
+                right: 0;
+                border-top: 1px solid var(--border-color);
+            }
+            
+            .nav-link {
+                padding: 8px 12px;
+                font-size: 0.9em;
+                flex: 1;
+                text-align: center;
+            }
+            
+            .corner-image {
+                width: 100px;
+                height: 100px;
+                top: 10px;
+                right: 10px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .container {
+                margin: 70px 10px 80px;
+                padding: 20px;
+            }
+            
+            .time-display {
+                font-size: 1em;
+                padding: 6px 12px;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .search-box:focus {
+                width: 100%;
+            }
+            
+            .theme-toggle {
+                width: 100%;
+                text-align: center;
+            }
+            
+            #backToTop {
+                bottom: 80px;
+                right: 15px;
+            }
+        }
+
+        /* 高性能动画 */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            .top-nav, .top-controls, #backToTop {
+                display: none;
+            }
+            
+            .container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+            
+            #bg {
+                display: none;
+            }
+            
+            .corner-image {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+        <p>加载中...</p>
+    </div>
+    
+    <!-- 背景图区域 -->
+    <div id="bg"></div>
+    
+    <!-- 顶部控制区域（搜索和主题切换） -->
+    <div class="top-controls">
+        <!-- 搜索框 -->
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="搜索..." id="searchInput">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+        
+        <!-- 主题切换按钮 -->
+        <button class="theme-toggle" id="themeToggle">🌓 切换主题</button>
+    </div>
+    
+    <!-- 右上角导航 -->
+    <div class="top-nav">
+        <a href="index.html" class="nav-link">主页</a>
+        <a href="download.html" class="nav-link">下载</a>
+        <a href="index.html#projects" class="nav-link">项目</a>
+        <a href="about.html" class="nav-link">关于</a>
+    </div>
+    
+    <!-- 内容区域 -->
+    <div class="container">
+        <!-- 右上角头像 -->
+        <img class="corner-image" src="images/avatar.jpg" alt="SYSTEM-HTY头像" 
+             onerror="this.onerror=null; this.src='https://via.placeholder.com/150';">
+        
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <a href="index.html">首页</a> &gt; <span>关于我</span>
+        </div>
+
+        <header>
+            <h1>关于 SYSTEM-HTY</h1>
+            <p>Python开发者 | 技术爱好者 | 工具创造者</p>
+            
+            <!-- 时间显示 -->
+            <div class="time-display" id="current-time"></div>
+        </header>
+
+        <section id="intro">
+            <h2>个人简介</h2>
+            <p>你好！我是HTY，一名热爱编程的开发者，同时也是一名MMD创作者。我专注于Python开发，喜欢创造解决实际问题的工具。</p>
+            <p>我的技术兴趣包括：Python编程、Web开发、自动化工具开发以及多媒体内容创作。</p>
+        </section>
+
+        <section id="skills">
+            <h2>技术技能</h2>
+            
+            <div class="skill-bar">
+                <div class="skill-name">
+                    <span>Python</span>
+                    <span>90%</span>
+                </div>
+                <div class="skill-progress">
+                    <div class="skill-progress-bar" style="width: 90%"></div>
+                </div>
+            </div>
+            
+            <div class="skill-bar">
+                <div class="skill-name">
+                    <span>HTML/CSS</span>
+                    <span>85%</span>
+                </div>
+                <div class="skill-progress">
+                    <div class="skill-progress-bar" style="width: 85%"></div>
+                </div>
+            </div>
+            
+            <div class="skill-bar">
+                <div class="skill-name">
+                    <span>JavaScript</span>
+                    <span>75%</span>
+                </div>
+                <div class="skill-progress">
+                    <div class="skill-progress-bar" style="width: 75%"></div>
+                </div>
+            </div>
+            
+            <div class="skill-bar">
+                <div class="skill-name">
+                    <span>MMD制作</span>
+                    <span>80%</span>
+                </div>
+                <div class="skill-progress">
+                    <div class="skill-progress-bar" style="width: 80%"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2>项目经历</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2023-2025</div>
+                    <h3>极域电子教室破解工具</h3>
+                    <p>开发并维护功能强大的教学辅助工具，支持多种破解模式和自定义设置。</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2023-2024</div>
+                    <h3>数据备份助手</h3>
+                    <p>创建自动化数据保护解决方案，支持本地和云存储备份。</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2023</div>
+                    <h3>网络监测工具</h3>
+                    <p>开发实时网络状态分析工具，帮助用户监控网络健康状况。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <h2>学习经历</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2020-至今</div>
+                    <h3>自学编程</h3>
+                    <p>通过在线资源和实践项目自学Python、Web开发和相关技术。</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2019-2020</div>
+                    <h3>MMD制作学习</h3>
+                    <p>学习MikuMikuDance制作技术，创作多个原创作品。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>联系我</h2>
+            <p>如果您对我的项目感兴趣或有任何合作意向，欢迎通过以下方式联系我：</p>
+            <p>邮箱：<a href="mailto:644043561@qq.com">644043561@qq.com</a></p>
+            <p>B站主页：<a class="bilibili-link" href="https://space.bilibili.com/3537109889583643?spm_id_from=333.788.0.0" target="_blank" rel="noopener">访问我的B站空间</a></p>
+        </section>
+
+        <footer>
+            <p>© 2023-2025 SYSTEM-HTY. 保留所有权利。</p>
+            <p>本网站使用HTML5、CSS3和JavaScript构建</p>
+            <p>加载时间: <span id="loadTime"></span> 毫秒</p>
+        </footer>
+    </div>
+    
+    <!-- 回到顶部按钮 -->
+    <button id="backToTop" title="回到顶部">↑</button>
+
+    <script>
+        // 页面加载完成后隐藏加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            // 确保页面内容已加载
+            setTimeout(function() {
+                var loader = document.getElementById('loader');
+                if (loader) {
+                    loader.classList.add('hidden');
+                }
+                
+                // 记录加载时间
+                var loadTime = performance.now();
+                var loadTimeElement = document.getElementById('loadTime');
+                if (loadTimeElement) {
+                    loadTimeElement.textContent = Math.round(loadTime);
+                }
+                
+                // 初始化进度条动画
+                animateSkillBars();
+            }, 500);
+        });
+
+        // 时间显示功能
+        function updateTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = String(now.getMonth() + 1).padStart(2, '0');
+            var day = String(now.getDate()).padStart(2, '0');
+            var hours = String(now.getHours()).padStart(2, '0');
+            var minutes = String(now.getMinutes()).padStart(2, '0');
+            var seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            var timeElement = document.getElementById('current-time');
+            if (timeElement) {
+                timeElement.textContent = year + '/' + month + '/' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+            }
+        }
+        
+        // 初始更新
+        updateTime();
+        
+        // 每秒更新一次
+        setInterval(updateTime, 1000);
+        
+        // 回到顶部功能
+        var backBtn = document.getElementById('backToTop');
+        if (backBtn) {
+            window.addEventListener('scroll', function() {
+                backBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+            });
+            
+            backBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        
+        // 主题切换功能
+        var themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            // 检查本地存储的主题设置
+            if (localStorage.getItem('theme') === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.textContent = '🌓 切换暗色';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '🌓 切换亮色';
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                var currentTheme = document.documentElement.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'light');
+                    themeToggle.textContent = '🌓 切换暗色';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeToggle.textContent = '🌓 切换亮色';
+                }
+            });
+        }
+        
+        // 进度条动画
+        function animateSkillBars() {
+            const skillBars = document.querySelectorAll('.skill-progress-bar');
+            skillBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        }
+        
+        // 添加错误处理，防止JavaScript错误导致页面无法正常加载
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript错误:', e.error);
+            // 确保即使有错误，加载动画也会被隐藏
+            var loader = document.getElementById('loader');
+            if (loader && !loader.classList.contains('hidden')) {
+                loader.classList.add('hidden');
+            }
+        });
+
+        // 确保页面完全加载后隐藏加载动画
+        window.addEventListener('load', function() {
+            var loader = document.getElementById('loader');
+            if (loader && !loader.classList.contains('hidden')) {
+                loader.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
